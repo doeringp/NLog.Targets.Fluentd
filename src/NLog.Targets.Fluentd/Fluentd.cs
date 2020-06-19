@@ -207,6 +207,8 @@ namespace NLog.Targets
 
         public bool IncludeAllProperties { get; set; }
 
+        public ISet<string> ExcludeProperties { get; set; }
+
         private TcpClient client;
 
         private Stream stream;
@@ -315,6 +317,9 @@ namespace NLog.Targets
                 {
                     var propertyKey = property.Key.ToString();
                     if (string.IsNullOrEmpty(propertyKey))
+                        continue;
+
+                    if (ExcludeProperties.Contains(propertyKey))
                         continue;
 
                     record[propertyKey] = SerializePropertyValue(propertyKey, property.Value);
