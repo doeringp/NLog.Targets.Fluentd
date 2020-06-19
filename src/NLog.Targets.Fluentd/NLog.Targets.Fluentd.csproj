@@ -8,7 +8,7 @@
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
     <Copyright>Copyright (c) 2020 - Moriyoshi Koizumi and Jarred Capellman</Copyright>
 
-    <Version>1.0.5.0</Version>
+    <Version>1.0.6.0</Version>
     
     <PackageTags>NLog;fluentd;log;logging</PackageTags>
     <PackageIconUrl>http://nlog-project.org/N.png</PackageIconUrl>
@@ -16,7 +16,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/fluent/NLog.Targets.Fluentd/master/LICENSE.txt</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/jcapellman/NLog.Targets.Fluentd</RepositoryUrl>
-    <PackageReleaseNotes>Switched to using NLog 4.7 and .NET Standard 2.0 only</PackageReleaseNotes>
+    <PackageReleaseNotes>Add exclude properties property</PackageReleaseNotes>
     <PackageId>NLog.Targets.Fluentd.NetStandard</PackageId>
     <Product>NLog.Targets.Fluentd.NetStandard</Product>
     <Company>Moriyoshi Koizumi, Jarred Capellman</Company>
