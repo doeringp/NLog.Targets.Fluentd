@@ -319,7 +319,7 @@ namespace NLog.Targets
                     if (string.IsNullOrEmpty(propertyKey))
                         continue;
 
-                    if (ExcludeProperties.Contains(propertyKey))
+                    if (ExcludeProperties != null && ExcludeProperties.Contains(propertyKey))
                         continue;
 
                     record[propertyKey] = SerializePropertyValue(propertyKey, property.Value);
