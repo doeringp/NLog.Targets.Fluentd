@@ -8,7 +8,7 @@
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
     <Copyright>Copyright (c) 2020 - Moriyoshi Koizumi and Jarred Capellman and Peter Doering</Copyright>
 
-    <Version>1.0.7.0</Version>
+    <Version>1.0.8.0</Version>
     
     <PackageTags>NLog;fluentd;log;logging</PackageTags>
     <PackageIconUrl>http://nlog-project.org/N.png</PackageIconUrl>
@@ -16,7 +16,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/fluent/NLog.Targets.Fluentd/master/LICENSE.txt</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/jcapellman/NLog.Targets.Fluentd</RepositoryUrl>
-    <PackageReleaseNotes>Add exclude properties property</PackageReleaseNotes>
+    <PackageReleaseNotes>Support for scoped properties from MDLC, MDC, NDLC and NDC contexts</PackageReleaseNotes>
     <PackageId>NLog.Targets.Fluentd</PackageId>
     <Product>NLog.Targets.Fluentd</Product>
     <Company>Moriyoshi Koizumi, Jarred Capellman, Peter Doering</Company>
