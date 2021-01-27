@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Reflection;
 using MsgPack;
 using MsgPack.Serialization;
+using NLog.Config;
 
 namespace NLog.Targets
 {
@@ -181,7 +182,7 @@ namespace NLog.Targets
     }
 
     [Target("Fluentd")]
-    public class Fluentd : NLog.Targets.TargetWithLayout
+    public class Fluentd : NLog.Targets.TargetWithContext
     {
         public string Host { get; set; }
 
@@ -204,8 +205,6 @@ namespace NLog.Targets
         public int LingerTime { get; set; }
 
         public bool EmitStackTraceWhenAvailable { get; set; }
-
-        public bool IncludeAllProperties { get; set; }
 
         public ISet<string> ExcludeProperties { get; set; }
 
@@ -311,19 +310,19 @@ namespace NLog.Targets
                 }
                 record.Add("stacktrace", transcodedFrames);
             }
-            if (this.IncludeAllProperties && logEvent.Properties.Count > 0)
+
+            IDictionary<string, object> allProperties = GetAllProperties(logEvent);
+
+            foreach (var property in allProperties)
             {
-                foreach (var property in logEvent.Properties)
-                {
-                    var propertyKey = property.Key.ToString();
-                    if (string.IsNullOrEmpty(propertyKey))
-                        continue;
+                var propertyKey = property.Key.ToString();
+                if (string.IsNullOrEmpty(propertyKey))
+                    continue;
 
-                    if (ExcludeProperties != null && ExcludeProperties.Contains(propertyKey))
-                        continue;
+                if (ExcludeProperties != null && ExcludeProperties.Contains(propertyKey))
+                    continue;
 
-                    record[propertyKey] = SerializePropertyValue(propertyKey, property.Value);
-                }
+                record[propertyKey] = SerializePropertyValue(propertyKey, property.Value);
             }
 
             try
