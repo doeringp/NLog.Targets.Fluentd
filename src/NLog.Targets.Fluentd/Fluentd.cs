@@ -23,7 +23,7 @@ using System.Diagnostics;
 using System.Reflection;
 using MsgPack;
 using MsgPack.Serialization;
-using NLog.Config;
+using NLog.Layouts;
 
 namespace NLog.Targets
 {
@@ -184,11 +184,11 @@ namespace NLog.Targets
     [Target("Fluentd")]
     public class Fluentd : NLog.Targets.TargetWithContext
     {
-        public string Host { get; set; }
+        public Layout Host { get; set; }
 
-        public int Port { get; set; }
+        public Layout Port { get; set; }
 
-        public string Tag { get; set; }
+        public Layout Tag { get; set; }
 
         public bool NoDelay { get; set; }
 
@@ -230,24 +230,33 @@ namespace NLog.Targets
             this.client.LingerState = new LingerOption(this.LingerEnabled, this.LingerTime);
         }
 
-        protected void EnsureConnected()
+        protected void EnsureConnected(LogEventInfo lastEvent)
         {
             if (this.client == null)
             {
                 InitializeClient();
-                ConnectClient();
+                ConnectClient(lastEvent);
             }
             else if (!this.client.Connected)
             {
                 Cleanup();
                 InitializeClient();
-                ConnectClient();
+                ConnectClient(lastEvent);
             }
         }
 
-        private void ConnectClient()
+        private void ConnectClient(LogEventInfo lastEvent)
         {
-            this.client.Connect(this.Host, this.Port);
+            string host = Host.Render(lastEvent);
+            string portString = Port.Render(lastEvent);
+
+            if (string.IsNullOrWhiteSpace(host))
+                throw new NLogConfigurationException("The Host is missing.");
+
+            if (!int.TryParse(portString, out int port))
+                throw new NLogConfigurationException("The Port must be a number.");
+
+            this.client.Connect(host, port);
             this.stream = this.client.GetStream();
             this.emitter = new FluentdEmitter(this.stream);
         }
@@ -327,7 +336,7 @@ namespace NLog.Targets
 
             try
             {
-                EnsureConnected();
+                EnsureConnected(logEvent);
             }
             catch (Exception ex)
             {
@@ -335,9 +344,11 @@ namespace NLog.Targets
                 throw;  // Notify NLog of failure
             }
 
+            string tag = Tag.Render(logEvent);
+
             try
             {
-                this.emitter?.Emit(logEvent.TimeStamp, this.Tag, record);
+                this.emitter?.Emit(logEvent.TimeStamp, tag, record);
             }
             catch (Exception ex)
             {
@@ -361,7 +372,7 @@ namespace NLog.Targets
         public Fluentd()
         {
             this.Host = "127.0.0.1";
-            this.Port = 24224;
+            this.Port = "24224";
             this.ReceiveBufferSize = 8192;
             this.SendBufferSize = 8192;
             this.ReceiveTimeout = 1000;
