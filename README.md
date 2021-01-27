@@ -8,18 +8,20 @@ Settings
 
 Setting                     | Description                                                                                                   | Example            
 --------------------------- | ------------------------------------------------------------------------------------------------------------  | -------------------
-Host                        | Host name of the fluentd node                                                                                 | example.local
-Port                        | Port number of the fluentd node                                                                               | 24224
-Tag                         | Fluentd tag name                                                                                              | windowshost
-NoDelay                     | Enable Nagle's algorithm                                                                                      | true
-SendBufferSize              | Send buffer size                                                                                              | 8192
-SendTimeout                 | Send timeout                                                                                                  | 2
-LingerEnabled               | Wait for all the data to be sent when closing the connection                                                  | false
-LingerTime                  | Linger timeout                                                                                                | 2
-EmitStackTraceWhenAvailable | Emit a stacktrace for every log entry when available                                                          | false
-IncludeAllProperties        | Include structured logging parameters for every log entry                                                     | false
-ExcludeProperties           | Comma separated string with names which properties to exclude. Only used when IncludeAllProperties is *true*. | property1,property2
+host                        | Host name of the fluentd node                                                                                 | example.local
+port                        | Port number of the fluentd node                                                                               | 24224
+tag                         | Fluentd tag name                                                                                              | windowshost
+noDelay                     | Enable Nagle's algorithm                                                                                      | true
+sendBufferSize              | Send buffer size                                                                                              | 8192
+sendTimeout                 | Send timeout                                                                                                  | 2
+lingerEnabled               | Wait for all the data to be sent when closing the connection                                                  | false
+lingerTime                  | Linger timeout                                                                                                | 2
+emitStackTraceWhenAvailable | Emit a stacktrace for every log entry when available                                                          | false
+includeEventProperties      | Include structured logging parameters from LogEvent properties.                                               | false
+includeMdlc                 | Include structured logging parameters from `MappedDiagnosticsLogicalContext`.                                 | false
+excludeProperties           | Comma separated string with names which properties to exclude. Only used when IncludeAllProperties is *true*. | property1,property2
 
+Read more about [Contexts in NLog](https://github.com/NLog/NLog/wiki/Context).
 
 License
 -------
